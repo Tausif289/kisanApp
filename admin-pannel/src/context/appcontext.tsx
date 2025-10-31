@@ -28,7 +28,7 @@ interface AppContextProviderProps {
 
 const AppContextProvider = ({ children }: AppContextProviderProps) => {
 const [username, setUsername] = useState<any>(() => {
-  const savedUser = localStorage.getItem("name");
+  const savedUser = localStorage.getItem("username");
   return savedUser ? JSON.parse(savedUser) : null;
 });
 const [showlogin, setShowlogin] = useState(false);

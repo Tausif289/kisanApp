@@ -35,9 +35,8 @@ const CropFarmingGuide: React.FC = () => {
    const filteredCrops = crops.filter(crop =>
     crop.name.toLowerCase().includes(search.toLowerCase())
   );
- 
   return (
-    <div className="space-y-6  p-10 ">
+    <div className="space-y-6">
       {/* Header Section */}
       <div className="bg-white rounded-xl p-6 shadow-lg">
         <div className="flex items-center space-x-4 mb-4">
@@ -89,11 +88,10 @@ const CropFarmingGuide: React.FC = () => {
             {/* Card Header */}
             <div className="p-6 border-b border-gray-100">
               <div className="flex items-center space-x-4">
-                <img
-                  src={crop.image}
-                  alt={crop.name}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
+                 <div className="w-16 h-16 flex items-center justify-center rounded-lg bg-green-100 text-green-800 font-bold text-xl">
+            {crop.id }
+          </div>
+
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-gray-800">{crop.name}</h3>
                   <div className="flex items-center space-x-4 mt-1 text-sm text-gray-600">
