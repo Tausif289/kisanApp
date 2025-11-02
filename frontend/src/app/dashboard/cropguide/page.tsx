@@ -1,27 +1,11 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header"; // ✅ Import Header
 
-
-
-import { LucideIcon } from "lucide-react";
-import { ChevronDown, ChevronUp, Sprout, Droplets, Sun, Scissors } from 'lucide-react';
-import crops from '../assets/crops';
-interface CropStep {
-  title: string;// ya React.FC<React.SVGProps<SVGSVGElement>>
-  //icon: LucideIcon,
-  description: string;
-  tips: string[];
-}
-
-interface Crop {
-  id: number;
-  name: string;
-  image: string;
-  difficulty: "Easy" | "Medium" | "Hard";
-  duration: string;
-  steps: CropStep[];
-}
+// Icons
+import { ChevronDown, ChevronUp } from "lucide-react";
+import crops from "../assets/crops";
 
 const CropFarmingGuide: React.FC = () => {
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
@@ -29,16 +13,29 @@ const CropFarmingGuide: React.FC = () => {
 
   const toggleCard = (id: number) => {
     setExpandedCards((prev) =>
-      prev.includes(id) ? prev.filter((cardId) => cardId !== id) : [...prev, id]
+      prev.includes(id)
+        ? prev.filter((cardId) => cardId !== id)
+        : [...prev, id]
     );
   };
-   const filteredCrops = crops.filter(crop =>
+
+  const filteredCrops = crops.filter((crop) =>
     crop.name.toLowerCase().includes(search.toLowerCase())
   );
+
   return (
-    <div className="space-y-6">
-      {/* Header Section */}
-      <div className="bg-white rounded-xl p-6 shadow-lg">
+    <div className="flex flex-col h-full">
+      {/* ✅ Sticky Stylish Dashboard Header */}
+      <div className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      <DashboardHeader
+        title="Farming Guide & Crop Instructions"
+        subtitle="Step-by-step guide to help you grow crops effectively"
+      />
+        </div>
+      {/* ✅ Main Content */}
+      <main className="flex-1 p-4 md:p-6 lg:p-8 space-y-6">
+        {/* Header Section */}
+        <div className="bg-white rounded-xl p-6 shadow-lg">
         <div className="flex items-center space-x-4 mb-4">
           <img
             src="https://images.pexels.com/photos/1595108/pexels-photo-1595108.jpeg?auto=compress&cs=tinysrgb&w=200"
@@ -215,6 +212,7 @@ const CropFarmingGuide: React.FC = () => {
           ))}
         </div>
       </div>
+      </main>
     </div>
   );
 };

@@ -8,45 +8,33 @@ import { Feedback } from "@/types/feedback";
 import toast from "react-hot-toast";
 import { AppContext } from "@/app/context/appcontext";
 import { jwtDecode } from "jwt-decode";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 
-interface Props {
-  fb: Feedback;
-  currentUserId?: string;
-  onEdit: (fb: Feedback) => void;
-  onDelete: (id: string) => void;
-}
 interface TokenPayload {
   id: string;
 }
 
 export default function FeedbackPage() {
-   const context = useContext(AppContext);
-    if (!context) {
-      throw new Error("AppContext must be used within AppContextProvider");
-    }
-  const {token}=context;
-  console.log(token);
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("AppContext must be used within AppContextProvider");
+  }
+  const { token, name } = context;
+
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Feedback | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | undefined>(undefined);
-// decode token to get current user id
- //let currentUserId: string | undefined;
-useEffect(() => {
-  if (!token) {
-    console.warn("No token found in context, skipping decode.");
-    return;
-  }
 
-  try {
-    const payload = jwtDecode<TokenPayload>(token);
-    setCurrentUserId(payload.id);
-    console.log("Decoded userId:", payload.id);
-  } catch (err) {
-    console.error("JWT decode failed", err);
-    setCurrentUserId(undefined);
-  }
-}, [token]);
+  useEffect(() => {
+    if (!token) return;
+    try {
+      const payload = jwtDecode<TokenPayload>(token);
+      setCurrentUserId(payload.id);
+    } catch {
+      setCurrentUserId(undefined);
+    }
+  }, [token]);
 
   useEffect(() => {
     loadFeedbacks();
@@ -56,7 +44,6 @@ useEffect(() => {
     setLoading(true);
     try {
       const data = await fetchFeedbacks();
-      console.log(data);
       setFeedbacks(data);
     } catch (err) {
       console.error(err);
@@ -66,9 +53,7 @@ useEffect(() => {
   };
 
   const handleAdd = (newFb: Feedback) => setFeedbacks(prev => [newFb, ...prev]);
-
   const handleEdit = (fb: Feedback) => setEditing(fb);
-
   const handleDelete = async (id: string) => {
     if (!token) return toast.error("Login required");
     if (!confirm("Delete this feedback?")) return;
@@ -76,8 +61,7 @@ useEffect(() => {
       await delFeedback(id, token);
       setFeedbacks(prev => prev.filter(f => f._id !== id));
       toast.success("Deleted");
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Delete failed");
     }
   };
@@ -89,45 +73,61 @@ useEffect(() => {
       setFeedbacks(prev => prev.map(f => (f._id === editing._id ? updated : f)));
       setEditing(null);
       toast.success("Updated");
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Update failed");
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Farmer Feedback</h2>
-
-      <FeedbackForm onAdded={handleAdd} />
-
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">All feedbacks</h3>
-        {loading ? (
-          <p>Loading...</p>
-        ) : feedbacks.length === 0 ? (
-          <p>No feedback yet.</p>
-        ) : (
-          feedbacks.map(fb => (
-            <FeedbackItem
-              key={fb._id}
-              fb={fb}
-              currentUserId={currentUserId}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              refresh={loadFeedbacks} 
-            />
-          ))
-        )}
+    <div className="flex flex-col h-full">
+      {/* ✅ Sticky Header */}
+      <div className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <DashboardHeader
+          title="Farmer Feedback"
+          subtitle={`Share and view experiences from fellow farmers, ${name || "Guest"}`}
+        />
       </div>
 
-      {editing && (
-        <EditModal
-          feedback={editing}
-          onClose={() => setEditing(null)}
-          onSubmit={submitEdit}
-        />
-      )}
+      {/* ✅ Full Width Content */}
+      <main className="p-4 md:p-6 lg:p-8 flex-1 overflow-auto w-full">
+
+        {/* ✅ Make Feedback Form Full Width */}
+        <div className="w-full">
+          <FeedbackForm onAdded={handleAdd} />
+        </div>
+
+        {/* ✅ Full-width Feedback List */}
+        <div className="w-full mt-6">
+          <h3 className="text-lg font-semibold mb-2">All Feedbacks</h3>
+          {loading ? (
+            <p>Loading...</p>
+          ) : feedbacks.length === 0 ? (
+            <p>No feedback yet.</p>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {feedbacks.map(fb => (
+                <FeedbackItem
+                  key={fb._id}
+                  fb={fb}
+                  currentUserId={currentUserId}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  refresh={loadFeedbacks}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Edit Modal */}
+        {editing && (
+          <EditModal
+            feedback={editing}
+            onClose={() => setEditing(null)}
+            onSubmit={submitEdit}
+          />
+        )}
+      </main>
     </div>
   );
 }

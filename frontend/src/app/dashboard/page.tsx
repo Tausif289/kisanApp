@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import {WeatherWidget} from "@/components/dashboard/weather-widget"
+import { WeatherWidget } from "@/components/dashboard/weather-widget";
 import { SoilHealthWidget } from "@/components/dashboard/soil-health-widget";
 import { useContext } from "react";
 import { HistoricalDataWidget } from "@/components/dashboard/historical-data-widget";
@@ -10,20 +10,25 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AppContext } from "../context/appcontext";
 
+
 export default function DashboardPage() {
-   const context = useContext(AppContext);
-  
-    if (!context) {
-      throw new Error("AppContext must be used within AppContextProvider");
-    }
-  const {name,setName,setToken,setEmail,setDistrict,setMobilenumber,setSoiltype,setState}=context;
-  
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("AppContext must be used within AppContextProvider");
+  }
+
+  const { name } = context;
+
   return (
     <div className="flex flex-col h-full">
-     <DashboardHeader 
-        title={`Welcome, ${name || "Farmer"}`}   // fallback agar name null/undefined hai
-       subtitle="Here's a summary of your farm's status."
-      />
+      {/* Sticky Stylish Header */}
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md border-b border-gray-200">
+        <DashboardHeader
+          title={`Welcome, ${name || "Farmer"}`}
+          subtitle="Here's a summary of your farm's status."
+        />
+      </div>
+
       <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
           <div className="lg:col-span-3">
@@ -31,7 +36,7 @@ export default function DashboardPage() {
               <CardHeader>
                 <CardTitle>Get Your Recommendation based on Soil Type</CardTitle>
                 <CardDescription>
-                  Let analyze  your farm data to suggest the best crops for the upcoming season.
+                  Let us analyze your farm data to suggest the best crops for the upcoming season.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -43,9 +48,11 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </div>
+
           <div className="lg:col-span-1">
-             <WeatherWidget />
+            <WeatherWidget />
           </div>
+
           <div className="lg:col-span-2 grid gap-6">
             <SoilHealthWidget />
             <HistoricalDataWidget />
