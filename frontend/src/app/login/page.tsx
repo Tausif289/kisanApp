@@ -37,7 +37,7 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // 🔹 Yahan apne backend ka URL daalo
-  const backendUrl = process.env.BACKEND_URL;  
+  const backendUrl = "http://localhost:4000";
 
   const states = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -119,7 +119,7 @@ const Login: React.FC = () => {
 
         } else {
           // 🔹 Register API call
-          response = await axios.post(backendUrl+'/api/user/register', formData);
+          response = await axios.post(`${backendUrl}/api/user/register`, formData);
            console.log("response of backend", response.data);
         }
 
