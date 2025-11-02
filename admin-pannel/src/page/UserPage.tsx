@@ -1,8 +1,8 @@
-import React, { useState, useEffect ,useContext } from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
-import { Users, User, Search, Filter, Mail } from "lucide-react";
+import { Users, User, Search,  Mail } from "lucide-react";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { AppContext } from "../context/appcontext";
+
 interface UserData {
   _id: string;
   name: string;
@@ -21,7 +21,7 @@ const UsersPage: React.FC = () => {
   // Fetch users from backend
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/user/all"); 
+      const res = await axios.get("https://kisanportal.onrender.com/api/user/all"); 
       setUsers(res.data.users); // { users: [...] }
       setIsLoading(false);
     } catch (err) {
@@ -38,7 +38,7 @@ const UsersPage: React.FC = () => {
   const deleteUser = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await axios.delete(`http://localhost:4000/api/user/${id}`);
+      await axios.delete(`https://kisanportal.onrender.com/api/user/${id}`);
       setUsers((prev) => prev.filter((user) => user._id !== id));
     } catch (err) {
       console.error(err);

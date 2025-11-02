@@ -29,7 +29,7 @@ const FeedbackPage: React.FC = () => {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/feedback");
+        const res = await axios.get("https://kisanportal.onrender.com/api/feedback");
         setFeedback(res.data);
       } catch (err) {
         console.error(err);
@@ -68,13 +68,13 @@ const FeedbackPage: React.FC = () => {
       const token = localStorage.getItem('adminToken');
       console.log("token",token)
       await axios.post(
-        `http://localhost:4000/api/${fbId}/replyadmin`,
+        `https://kisanportal.onrender.com/api/${fbId}/replyadmin`,
         { userId:fbId,content: text, username: currentUserName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setReplyText(prev => ({ ...prev, [fbId]: '' }));
       // Refresh feedbacks after reply
-      const res = await axios.get("http://localhost:4000/api/feedback");
+      const res = await axios.get("https://kisanportal.onrender.com/api/feedback");
       setFeedback(res.data);
     } catch (err) {
       console.error("Error posting reply:", err);

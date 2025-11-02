@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/appcontext";
 import axios from "axios";
 import { CheckCircle } from "lucide-react";
@@ -10,25 +10,11 @@ export default function AdminProfilePage() {
     throw new Error("AppContext must be used within AppContextProvider");
   }
 
-  const { username, email, role, setToken, setEmail, setRole, setUsername } = context;
+  const { username, email, role } = context;
 
   // Optional: create initials if no profilePic
   const initials = username ? username.charAt(0).toUpperCase() : "A";
 
-  const handleLogout = () => {
-    setToken(null);
-    setUsername('');
-    setEmail('');
-    setRole('');
-
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("role");
-    localStorage.removeItem("email");
-
-    // Redirect to login page
-    window.location.href = "/login";
-  };
 
   // State for real counts
   const [totalUsers, setTotalUsers] = useState<number>(0);
@@ -38,10 +24,10 @@ export default function AdminProfilePage() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const usersRes = await axios.get("http://localhost:4000/api/user/all");
+        const usersRes = await axios.get("https://kisanportal.onrender.com/api/user/all");
         setTotalUsers(usersRes.data.users.length);
 
-        const feedbackRes = await axios.get("http://localhost:4000/api/feedback");
+        const feedbackRes = await axios.get("https://kisanportal.onrender.com/api/feedback");
         setTotalFeedbacks(feedbackRes.data.length);
       } catch (err) {
         console.error("Error fetching counts:", err);

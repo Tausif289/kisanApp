@@ -7,7 +7,7 @@ const AuthPage = () => {
   const context = useContext(AppContext);
   if (!context) throw new Error("AppContext must be used within AppContextProvider");
 
-  const { token, setToken, username, setUsername, email, setEmail, role, setRole } = context;
+  const { setToken, username, setUsername, email, setEmail, role, setRole } = context;
 
   const [isLogin, setIsLogin] = useState(true);
   const [password, setPassword] = useState("");
@@ -29,8 +29,8 @@ const AuthPage = () => {
 
     try {
       const endpoint = isLogin
-        ? "http://localhost:4000/api/admin/login"
-        : "http://localhost:4000/api/admin/signup";
+        ? "https://kisanportal.onrender.com/api/admin/login"
+        : "https://kisanportal.onrender.com/api/admin/signup";
 
       const body = isLogin
         ? { email, password }

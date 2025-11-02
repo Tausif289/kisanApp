@@ -1,6 +1,5 @@
-import React, { useEffect, useContext, useState } from "react";
+import  { useEffect, useContext, useState } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,

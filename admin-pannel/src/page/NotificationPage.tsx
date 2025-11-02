@@ -39,7 +39,7 @@ const NotificationsPage: React.FC = () => {
     const fetchData = async () => {
       try {
         // Fetch notifications from backend
-        const res = await axios.get('http://localhost:4000/api/notificationsall/all');
+        const res = await axios.get('https://kisanportal.onrender.com/api/notificationsall/all');
         const notifData: Notification[] = res.data.notifications.map((n: any) => ({
           _id: n._id,
           title: n.title,
@@ -51,7 +51,7 @@ const NotificationsPage: React.FC = () => {
         setNotifications(notifData);
 
         // Fetch crops
-        const cropsRes = await axios.get('http://localhost:4000/api/crops/all');
+        const cropsRes = await axios.get('https://kisanportal.onrender.com/api/crops/all');
         setCrops(cropsRes.data.crops || []);
 
         setIsLoading(false);
