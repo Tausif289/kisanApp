@@ -37,7 +37,7 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // 🔹 Yahan apne backend ka URL daalo
-  const backendUrl = "http://localhost:4000";  
+  const backendUrl = process.env.BACKEND_URL;  
 
   const states = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',

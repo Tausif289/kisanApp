@@ -64,7 +64,7 @@ export const Profile: React.FC = () => {
        console.log("userId",userId);
        console.log("email",email);
       const res = await axios.put(
-        `http://localhost:4000/api/user/${userId}`,
+        `process.env.BACKEND_URL/api/user/${userId}`,
         {
           name: formData.name,
           email: formData.email,

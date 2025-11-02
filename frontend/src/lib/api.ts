@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Feedback } from "../types/feedback";
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+export const API_BASE = process.env.BACKEND_URL || "http://localhost:4000";
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -18,7 +18,7 @@ export const authHeaders = (token?: string) => ({
 });
 
 export async function fetchFeedbacks(): Promise<Feedback[]> {
-  const res = await api.get("/feedback");
+  const res = await api.get("/api/feedback");
   return res.data;
 }
 
@@ -26,7 +26,7 @@ export async function postFeedback(
   data: { title?: string; content: string; improvements?: string[] ,username: string},
   token: string
 ): Promise<Feedback> {
-  const res = await api.post("/feedback", data, authHeaders(token));
+  const res = await api.post("/api/feedback", data, authHeaders(token));
   return res.data;
 }
 
@@ -35,11 +35,11 @@ export async function putFeedback(
   data: { title?: string; content?: string; improvements?: string[] },
   token: string
 ): Promise<Feedback> {
-  const res = await api.put(`/${id}`, data, authHeaders(token));
+  const res = await api.put(`/api/${id}`, data, authHeaders(token));
   return res.data;
 }
 
 export async function delFeedback(id: string, token: string) {
-  const res = await api.delete(`/${id}`, authHeaders(token));
+  const res = await api.delete(`/api/${id}`, authHeaders(token));
   return res.data;
 }

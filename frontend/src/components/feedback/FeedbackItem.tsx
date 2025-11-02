@@ -37,7 +37,7 @@ export default function FeedbackItem({
       console.log("token",token);
       console.log(fb._id);
       await axios.post(
-        `http://localhost:4000/api/${fb._id}/reply`,
+        `process.env.BACKEND_URL/api/${fb._id}/reply`,
         { content: replyText,
           username: name,
          },
@@ -126,7 +126,7 @@ export default function FeedbackItem({
               <span className="font-semibold text-blue-800">
                 {r.username}{" "}
                 <span className="text-xs text-gray-500 ml-1">
-                    ({r.role || "user"})
+                    ({"user"})
                 </span>
               </span>
               <span className="text-xs text-gray-400">
