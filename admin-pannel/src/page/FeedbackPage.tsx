@@ -21,7 +21,7 @@ const FeedbackPage: React.FC = () => {
  // const {token}=context;
   const [isLoading, setIsLoading] = useState(true);
   const [feedback, setFeedback] = useState<Feedback[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm] = useState('');
   const [replyText, setReplyText] = useState<{ [key: string]: string }>({});
   const [loadingReply, setLoadingReply] = useState<{ [key: string]: boolean }>({});
 
